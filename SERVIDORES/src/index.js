@@ -7,7 +7,7 @@ const PORT= 3000
 
 const app= express()
 
-const productos= new ProductManager('products.json')
+const productos= new ProductManager('./products.json')
 
 app.get('/productos', async (req, res)=>{
 const arrayProductos= await productos.getProducts()
