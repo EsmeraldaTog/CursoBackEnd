@@ -1,0 +1,89 @@
+const { Router }= require ('express')
+const ProductManager = require('./productManager');
+const upload= require('../utils')
+
+const router= Router();
+
+const productos= new  ProductManager('./src/products/products.json');
+
+
+router.get('/', async (req, res)=>{
+    try{
+const {limit}= req.query
+const arrayProductos= await productos.getProducts()
+if(limit > 0) {
+
+    let productsLimit = await arrayProductos.slice(0, limit);
+   return res.send(productsLimit);
+}
+res.send(arrayProductos)
+}
+catch (error) {
+    console.log(error.message);
+}
+
+})
+
+router.get('/:pid', async (req, res)=>{
+    const {pid}= req.params
+    const productId= await productos.getProductById(Number(pid))
+    res.send(productId)
+    })
+
+
+
+router.post('/', upload.single('file'), async (req, res)=>{
+   
+   
+    const {title, description,code,price,status,stock,category,thumbnail}= req.body
+    
+
+
+                const producto= {
+                title,
+                description,
+                code,
+                price,
+                status,
+                stock,
+                category,
+                
+                thumbnail: req.file.path
+                }
+                
+     const productNuevo= await productos.addProduct(producto)
+               
+              res.send(productNuevo)  })
+
+ 
+router.put('/:pid', upload.single('file'), async (req, res)=>{
+        const {pid}= req.params
+        const {title, description,code,price,status,stock,category,thumbnail}= req.body
+        
+        const infoProduct={
+            title,
+            description,
+            code,price,
+            status,
+            stock,
+            category,
+            thumbnail: req.file.path
+        }
+        
+        const productUpdate= await productos.updateProduct(Number(pid),infoProduct)
+        res.send(productUpdate)})
+                    
+            
+ 
+
+router.delete ('/:pid', async(req, res)=>{
+
+    const {pid} = req.params
+
+    const productFind= await productos.deleteProduct(Number(pid))
+    res.send(productFind)
+})
+
+    
+
+module.exports = router
