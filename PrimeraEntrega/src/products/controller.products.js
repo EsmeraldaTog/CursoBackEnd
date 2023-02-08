@@ -4,7 +4,7 @@ const upload= require('../utils')
 
 const router= Router();
 
-const productos= new  ProductManager('./src/products/products.json');
+const productos= new  ProductManager('./products/products.json');
 
 
 router.get('/', async (req, res)=>{
@@ -34,7 +34,8 @@ router.get('/:pid', async (req, res)=>{
 
 router.post('/', upload.single('file'), async (req, res)=>{
    
-   
+    try{
+  
     const {title, description,code,price,status,stock,category,thumbnail}= req.body
     
 
@@ -47,16 +48,31 @@ router.post('/', upload.single('file'), async (req, res)=>{
                 status,
                 stock,
                 category,
+                thumbnail
                 
-                thumbnail: req.file.path
                 }
+                producto.thumbnail=req.file.path
                 
      const productNuevo= await productos.addProduct(producto)
-               
-              res.send(productNuevo)  })
+
+     if(productNuevo== 'Codigo del Producto Repetido')
+            {
+                 res.status(400).json({message: 'el codigo del producto ya existe'})
+                } 
+                else { 
+                    res.send(productNuevo) } 
+                }
+  
+     catch (error) {
+       res.status(400).json({message: 'Falta cargar imagen al campo thumbail'});
+ }
+    })
 
  
+
 router.put('/:pid', upload.single('file'), async (req, res)=>{
+try {
+
         const {pid}= req.params
         const {title, description,code,price,status,stock,category,thumbnail}= req.body
         
@@ -67,11 +83,21 @@ router.put('/:pid', upload.single('file'), async (req, res)=>{
             status,
             stock,
             category,
-            thumbnail: req.file.path
+            thumbnail
         }
+
+        infoProduct.thumbnail= req.file.path
         
         const productUpdate= await productos.updateProduct(Number(pid),infoProduct)
-        res.send(productUpdate)})
+        res.send(productUpdate)}
+        
+        
+        catch (error) {
+            res.status(400).json({message: 'Falta cargar imagen al campo thumbail'});
+      }
+    
+    
+    })
                     
             
  

@@ -22,7 +22,7 @@ class ProductManager{
               let codeNoRepeat= data.find(e => e.code === producto.code);
 
               if (codeNoRepeat) {
-                return console.log("el codigo del producto se encuentra repetido, no se puede agregar productos con el mismo codigo")
+                return 'Codigo del Producto Repetido'
               }
               //Asignamos id incremental 
               else {
@@ -39,7 +39,7 @@ class ProductManager{
                   data.push(producto)
                 await fs.promises.writeFile(this.path,JSON.stringify(data),"utf-8")
             
-                return  console.log(producto) 
+                return  producto
               }
                   catch (error) {
                                 console.log(error.message);
@@ -67,7 +67,7 @@ class ProductManager{
                 if(buscarId)
                 return buscarId
                 else{
-                  return console.log(`No existe producto con el Id:  ${id}`);
+                  return `No existe producto con el Id:  ${id}`;
                 }
 
                   }
@@ -92,9 +92,11 @@ class ProductManager{
               // let index = data.findIndex(e => e.id === id)
               // data[index] = productUpdate
               await fs.promises.writeFile(this.path,JSON.stringify(data),"utf-8")
-              return console.log(productUpdate);
-          } else{
-              console.log('no existe producto con el id');
+              return productUpdate
+          } 
+          
+          else{
+             return 'no existe producto con el id'
           }
            
               
@@ -113,10 +115,10 @@ class ProductManager{
                     const productos= data.filter(x => x.id !== id)
                     await fs.promises.writeFile(this.path,JSON.stringify(productos),"utf-8")
 
-                    return console.log(`se borro el producto con el id : ${id}`);
+                    return `se borro el producto con el id : ${id}`;
                    }
                    else{
-                    console.log(`No se puede eliminar producto ya que el id ${id} no se encontro`);
+                    return `No se puede eliminar producto ya que el id ${id} no existe`;
                    }
 
                 }

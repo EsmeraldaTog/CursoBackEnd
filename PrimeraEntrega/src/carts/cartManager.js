@@ -46,7 +46,7 @@ class CartManager{
                    //escritura en el Archivo
                 await fs.promises.writeFile(this.path,JSON.stringify(data),"utf-8")
             
-                return  console.log(cart) 
+                return  cart
               }
                   catch (error) {
                                 console.log(error.message);
@@ -104,7 +104,7 @@ class CartManager{
               
 
                   else {
-                    console.log('El carrito o producto no existen ')
+                    return 'El carrito o producto no existen '
                   }
 
    
@@ -130,7 +130,7 @@ class CartManager{
                                 if(cartId)
                                 return cartId.products
                                 else{
-                                  return console.log(`No existe carrito con el Id:  ${id}`);
+                                  return `No existe carrito con el Id:  ${id}`
                                 }
                 
                                   }
