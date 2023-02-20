@@ -18,7 +18,7 @@ if(limit > 0) {
     let productsLimit = await arrayProductos.slice(0, limit);
    return res.send(productsLimit);
 }
-res.send(arrayProductos)
+res.status(200).send(arrayProductos)
 }
 catch (error) {
     console.log(error.message);
