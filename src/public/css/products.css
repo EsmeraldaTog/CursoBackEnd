@@ -1,0 +1,15 @@
+body{
+
+    background-color: rgb(238, 249, 245);
+
+    color: black;
+
+   
+}
+
+ul {
+    list-style-type: none;
+}
+.product{
+    background-color: bisque;
+}
